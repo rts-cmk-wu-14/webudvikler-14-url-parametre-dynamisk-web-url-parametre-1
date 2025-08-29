@@ -3,9 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <title>Airbnb - Destination</title>
 </head>
 <body>
-    
+    <div class="wrapper">
+        <nav class="destination-nav">
+            <a href="index.html" class="back-button" aria-label="Go back to apartments list">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Tilbage til forsiden
+            </a>
+        </nav>
+        <main class="destination-container">
+            <figure class="destination-image">
+                <img src="" alt="Destination image" id="destination-img">
+            </figure>
+            <article class="destination-info">
+                <header class="destination-header">
+                    <div class="destination-title-row">
+                        <h1 id="destination-title"></h1>
+                        <button class="destination-heart-icon" type="button" aria-label="Add to favorites" id="destination-heart">
+                            <svg viewBox="0 0 24 24" width="32" height="32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 8.25c0-2.485-2.015-4.5-4.5-4.5-1.734 0-3.238 1.012-3.942 2.475-.704-1.463-2.208-2.475-3.943-2.475-2.485 0-4.5 2.015-4.5 4.5 0 7.125 8.385 11.61 8.385 11.61.277.152.613.152.89 0C12.615 19.86 21 15.375 21 8.25z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="destination-subtitle" id="destination-subtitle"></p>
+                </header>
+                <section class="destination-content">
+                    <p class="destination-text" id="destination-text"></p>
+                    <aside class="destination-facilities">
+                        <h2>Faciliteter</h2>
+                        <ul id="facilities-list"></ul>
+                    </aside>
+                </section>
+            </article>
+        </main>
+    </div>
 </body>
+<script src="script.js" defer></script>
 </html>

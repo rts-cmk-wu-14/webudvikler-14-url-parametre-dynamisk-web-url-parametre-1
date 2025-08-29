@@ -41,4 +41,57 @@ function createCards(data) {
     })
 }
 
-fetchData();
+function createDestination(data) {
+    // Update destination image
+    const destinationImg = document.getElementById('destination-img');
+    if (destinationImg) {
+        destinationImg.src = `../img/${data.image}`;
+        destinationImg.alt = `Image of ${data.title}`;
+    }
+
+    // Update destination title
+    const destinationTitle = document.getElementById('destination-title');
+    if (destinationTitle) {
+        destinationTitle.textContent = data.title;
+    }
+
+    // Update destination subtitle
+    const destinationSubtitle = document.getElementById('destination-subtitle');
+    if (destinationSubtitle) {
+        destinationSubtitle.textContent = data.subtitle;
+    }
+
+    // Update destination text
+    const destinationText = document.getElementById('destination-text');
+    if (destinationText) {
+        destinationText.textContent = data.text;
+    }
+
+    // Update facilities list
+    const facilitiesList = document.getElementById('facilities-list');
+    if (facilitiesList && data.facilities) {
+        facilitiesList.innerHTML = ''; // Clear existing content
+        data.facilities.forEach(facility => {
+            const listItem = document.createElement('li');
+            listItem.textContent = facility;
+            facilitiesList.appendChild(listItem);
+        });
+    }
+}
+
+
+function fetchDestination(id) {
+    fetch(`../data/${id.replace('apartment-', '')}.json`)
+        .then(response => response.json())
+        .then(data => {
+            createDestination(data);
+        })
+}
+
+// only use fetchDestination if the url has a parameter
+if (window.location.search) {
+    const id = window.location.search.split('=')[1];
+    fetchDestination(id);
+} else {
+    fetchData();
+}
