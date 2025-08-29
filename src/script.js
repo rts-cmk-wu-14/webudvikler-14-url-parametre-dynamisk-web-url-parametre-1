@@ -36,6 +36,31 @@ function createCards(data) {
         // add url parameter to the link
         link.href = `destination.html?id=${apartment.id}`;
 
+        // setup heart icon for favorites
+        const heartIcon = clone.querySelector('.heart-icon');
+        if (heartIcon) {
+            // Give each heart icon a unique ID
+            heartIcon.id = `heart-${apartment.id}`;
+            
+            // Set initial favorite state
+            heartIcon.classList.toggle('favorited', isFavorite(apartment.id));
+            
+            // Add click listener
+            heartIcon.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (isFavorite(apartment.id)) {
+                    removeFromFavorites(apartment.id);
+                } else {
+                    addToFavorites(apartment.id);
+                }
+                
+                // Update the visual state
+                heartIcon.classList.toggle('favorited', isFavorite(apartment.id));
+            });
+        }
+
         // append the clone to the container
         container.appendChild(clone);
     })
@@ -77,6 +102,21 @@ function createDestination(data) {
             facilitiesList.appendChild(listItem);
         });
     }
+
+    // Initialize favorite state and add click listener
+    const apartmentId = `apartment-${data.id}`;
+    updateFavoriteIcon(apartmentId);
+    
+    const favoriteIcon = document.getElementById('favorite-icon');
+    if (favoriteIcon) {
+        favoriteIcon.addEventListener('click', () => {
+            if (isFavorite(apartmentId)) {
+                removeFromFavorites(apartmentId);
+            } else {
+                addToFavorites(apartmentId);
+            }
+        });
+    }
 }
 
 
@@ -94,4 +134,33 @@ if (window.location.search) {
     fetchDestination(id);
 } else {
     fetchData();
+}
+
+function addToFavorites(id) {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    favorites.push(id);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    updateFavoriteIcon(id);
+}
+
+function removeFromFavorites(id) {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    const index = favorites.indexOf(id);
+    if (index > -1) {
+        favorites.splice(index, 1);
+    }
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    updateFavoriteIcon(id);
+}
+
+function isFavorite(id) {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    return favorites.includes(id);
+}
+
+function updateFavoriteIcon(id) {
+    const heartIcon = document.getElementById('favorite-icon');
+    if (heartIcon) {
+        heartIcon.classList.toggle('favorited', isFavorite(id));
+    }
 }

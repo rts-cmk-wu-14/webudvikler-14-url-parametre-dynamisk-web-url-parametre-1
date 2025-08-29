@@ -67,11 +67,21 @@ body {
     width: 24px;
     height: 24px;
     cursor: pointer;
+    color: #6b7280;
     display: flex;
     align-items: center;
     justify-content: center;
     background: none;
     border: none;
+    transition: color 150ms ease;
+}
+
+.heart-icon:hover {
+    color: #ef4444;
+}
+
+.heart-icon.favorited {
+    color: #ef4444;
 }
 
 .more-text {
