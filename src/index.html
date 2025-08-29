@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Airbnb</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <h1>Apartments for rent</h1>
+        </header>
+        <div class="data-container">
+            <template id="data-template">
+                <div class="apartment-card">
+                    <div class="card-image">
+                        <img src="" alt="billede af $id">
+                    </div>
+                    <div class="card-footer">
+                        <div class="heart-icon" role="button" tabindex="0" aria-label="Add to favorites">
+                            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 8.25c0-2.485-2.015-4.5-4.5-4.5-1.734 0-3.238 1.012-3.942 2.475-.704-1.463-2.208-2.475-3.943-2.475-2.485 0-4.5 2.015-4.5 4.5 0 7.125 8.385 11.61 8.385 11.61.277.152.613.152.89 0C12.615 19.86 21 15.375 21 8.25z" />
+                            </svg>
+                        </div>
+                        <div class="more-text">More</div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</body>
+<script src="script.js" defer></script>
+
+</html>
