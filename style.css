@@ -38,7 +38,30 @@ body {
 
 .card-content {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     background: #CEF9FF;
     padding: 16px;
+}
+
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lucide-heart {
+    cursor: pointer;
+}
+
+.lucide-heart.liked {
+    fill: #ff4757;
+    stroke: #ff4757;
+}
+
+.card-content a {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: black;
+    font-weight: 500;
+    font-size: 14px;
 }
