@@ -46,9 +46,13 @@ const generateDestinationCards = (destinations) => {
         const moreLink = card.querySelector("a");
         
         // add event listener for heart icon
-        heartIcon.addEventListener("click", () => {
-            heartIcon.classList.toggle("liked");
-        });
+        heartIcon.addEventListener("click", () => handleHeartClick(heartIcon, destination.id));
+        
+        // check if this destination is already liked
+        const likedDestinations = JSON.parse(localStorage.getItem('likedDestinations') || '[]');
+        if (likedDestinations.includes(destination.id.toString())) {
+            heartIcon.classList.add('liked');
+        }
         
         // update more link
         moreLink.href = `destination.html?id=${destination.id}`;
@@ -63,6 +67,25 @@ const generateDestinationCards = (destinations) => {
         
         wrapper.appendChild(cardClone);
     });
+};
+
+const handleHeartClick = (heartIcon, destinationId) => {
+    const id = destinationId.toString();
+    let likedDestinations = JSON.parse(localStorage.getItem('likedDestinations') || '[]');
+    
+    if (heartIcon.classList.contains('liked')) {
+        // Remove from liked
+        heartIcon.classList.remove('liked');
+        likedDestinations = likedDestinations.filter(likedId => likedId !== id);
+    } else {
+        // Add to liked
+        heartIcon.classList.add('liked');
+        if (!likedDestinations.includes(id)) {
+            likedDestinations.push(id);
+        }
+    }
+    
+    localStorage.setItem('likedDestinations', JSON.stringify(likedDestinations));
 };
 
 handleDestinationsLoad();
