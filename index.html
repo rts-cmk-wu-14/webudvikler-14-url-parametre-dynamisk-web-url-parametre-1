@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Destinations</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <h1>Apartments for rent</h1>
+    <nav>
+      <a href="favorites.html">❤️ </a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="grid" id="destinations"></div>
+  </main>
+
+  <script>
+    function getFavorites() {
+      return JSON.parse(localStorage.getItem("favorites")) || [];
+    }
+
+    function saveFavorites(favorites) {
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+    }
+
+    function toggleFavorite(id, btn) {
+      let favorites = getFavorites();
+      if (favorites.includes(id)) {
+        favorites = favorites.filter(fav => fav !== id);
+        btn.classList.remove("active");
+        btn.textContent = "♡";
+      } else {
+        favorites.push(id);
+        btn.classList.add("active");
+        btn.textContent = "❤️";
+      }
+      saveFavorites(favorites);
+    }
+
+    function renderFavorites() {
+      const favorites = getFavorites();
+      document.querySelectorAll(".fav-btn").forEach(btn => {
+        const id = parseInt(btn.dataset.id, 10);
+        btn.textContent = favorites.includes(id) ? "❤️" : "♡";
+      });
+    }
+
+    fetch("destinations.json")
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("destinations");
+        data.destinations.forEach(dest => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <img src="${dest.image}" alt="${dest.destination}">
+            <div class="card-content">
+              <h3>${dest.title}</h3>
+              <p>${dest.subtitle}</p>
+            </div>
+            <div class="card-footer">
+              <button class="fav-btn" data-id="${dest.id}" aria-label="Toggle favorite">♡</button>
+              <a class="more-link" href="destination.html?id=${dest.id}">More →</a>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+
+        document.querySelectorAll(".fav-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            toggleFavorite(parseInt(btn.dataset.id, 10), btn);
+          });
+        });
+
+        renderFavorites();
+      });
+  </script>
+</body>
+
+</html>

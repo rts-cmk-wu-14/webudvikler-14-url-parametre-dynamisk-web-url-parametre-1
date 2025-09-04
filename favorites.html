@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>My Favorites</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <h1>❤️ My Favorites</h1>
+    <nav>
+      <a href="index.html">← Back to Destinations</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="grid" id="favorites"></div>
+  </main>
+
+  <script>
+    function getFavorites() {
+      return JSON.parse(localStorage.getItem("favorites")) || [];
+    }
+
+    function saveFavorites(favorites) {
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+    }
+
+    function toggleFavorite(id, btn) {
+      let favorites = getFavorites();
+      if (favorites.includes(id)) {
+        favorites = favorites.filter(fav => fav !== id);
+        btn.textContent = "♡";
+        btn.classList.remove("active");
+      } else {
+        favorites.push(id);
+        btn.textContent = "❤️";
+        btn.classList.add("active");
+      }
+      saveFavorites(favorites);
+
+      // Remove card immediately if unfavorited
+      if (!favorites.includes(id)) {
+        btn.closest(".card").remove();
+      }
+    }
+
+    fetch("destinations.json")
+      .then(res => res.json())
+      .then(data => {
+        const favorites = getFavorites();
+        const container = document.getElementById("favorites");
+
+        const favDestinations = data.destinations.filter(dest =>
+          favorites.includes(dest.id)
+        );
+
+        if (favDestinations.length === 0) {
+          container.innerHTML = "";
+          return;
+        }
+
+        favDestinations.forEach(dest => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <img src="${dest.image}" alt="${dest.destination}">
+            <div class="card-content">
+              <h3>${dest.title}</h3>
+              <p>${dest.subtitle}</p>
+            </div>
+            <div class="card-footer">
+              <button class="fav-btn active" data-id="${dest.id}">❤️</button>
+              <a class="more-link" href="destination.html?id=${dest.id}">More →</a>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+
+        document.querySelectorAll(".fav-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            toggleFavorite(parseInt(btn.dataset.id, 10), btn);
+          });
+        });
+      });
+  </script>
+</body>
+
+</html>

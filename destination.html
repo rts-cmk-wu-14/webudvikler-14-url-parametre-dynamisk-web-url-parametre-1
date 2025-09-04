@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Destination Details</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <a href="index.html">← Back</a> |
+    <a href="favorites.html">❤️ Favorit</a>
+  </header>
+
+  <main id="destination-details"></main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get("id"), 10);
+
+    function getFavorites() {
+      return JSON.parse(localStorage.getItem("favorites")) || [];
+    }
+    function saveFavorites(favorites) {
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+    }
+    function toggleFavorite(id) {
+      let favorites = getFavorites();
+      if (favorites.includes(id)) {
+        favorites = favorites.filter(fav => fav !== id);
+      } else {
+        favorites.push(id);
+      }
+      saveFavorites(favorites);
+      renderFavorite(id);
+    }
+    function renderFavorite(id) {
+      const btn = document.getElementById("fav-detail-btn");
+      const favorites = getFavorites();
+      btn.textContent = favorites.includes(id) ? "❤️ Remove from favorites" : "♡ Add to favorites";
+    }
+
+    fetch("destinations.json")
+      .then(res => res.json())
+      .then(data => {
+        const dest = data.destinations.find(d => d.id === id);
+        if (!dest) {
+          document.getElementById("destination-details").innerHTML = "<p>Destination not found.</p>";
+          return;
+        }
+        const container = document.getElementById("destination-details");
+        container.innerHTML = `
+          <h1>${dest.title}</h1>
+          <img src="${dest.image}" alt="${dest.destination}">
+          <p><strong>Location:</strong> ${dest.destination}</p>
+          <p><strong>Subtitle:</strong> ${dest.subtitle}</p>
+          <p>${dest.text}</p>
+          <ul class="facilities">
+            ${dest.facilities.map(f => `<li>${f}</li>`).join("")}
+          </ul>
+          
+        `;
+        document.getElementById("fav-detail-btn").addEventListener("click", () => toggleFavorite(dest.id));
+        renderFavorite(dest.id);
+      });
+  </script>
+</body>
+
+</html>
